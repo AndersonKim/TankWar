@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package anderson.tankwar;
+
+/**
+ * @author lenovo
+ *
+ */
+public class TankClient {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO 自动生成的方法存根
+
+	}
+
+}
