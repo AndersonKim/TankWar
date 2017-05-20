@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -24,8 +26,6 @@ public class TankClient extends Frame {
 		g.setColor(Color.RED);
 		g.fillOval(x, y, 30, 30);
 		g.setColor(c);
-
-		y += 5;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class TankClient extends Frame {
 		}
 		Graphics gOffScreen = offScreenImage.getGraphics();
 		Color c = gOffScreen.getColor();
-		gOffScreen.setColor(Color.GREEN);
+		gOffScreen.setColor(Color.BLACK);
 		gOffScreen.fillRect(0, 0, WIDTH, HIGHT);
 		gOffScreen.setColor(c);
 		paint(gOffScreen);
@@ -65,10 +65,13 @@ public class TankClient extends Frame {
 		});
 		this.setResizable(false);
 		this.setVisible(true);
+		this.addKeyListener(new KeyMonitor());
 		new Thread(new PaintThread()).start();
 
 	}
-
+public void currentPos(){
+	System.out.println(x+":"+y);
+}
 	private class PaintThread implements Runnable {
 
 		@Override
@@ -84,6 +87,34 @@ public class TankClient extends Frame {
 			}
 		}
 
+	}
+	/**
+	 * listen key press action and tank move
+	 * @author lenovo
+	 *
+	 */
+	private class KeyMonitor extends KeyAdapter{
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO 自动生成的方法存根
+			switch (arg0.getKeyCode()){
+				case 38:
+					y-=5;
+					break;
+				case 40:
+					y+=5;
+					break;
+				case 37:
+					x-=5;
+					break;
+				case 39:
+					x+=5;
+					break;
+			}
+			currentPos();
+		}
+		
 	}
 
 }
