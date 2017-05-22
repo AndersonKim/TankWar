@@ -16,8 +16,8 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
 
-	public static final int WIDTH = 300;
-	public static final int HIGHT = 400;
+	public static final int WIDTH = 500;
+	public static final int HIGHT = 500;
 	public Tank myTank=new Tank(50,50,this);
 	public List<Missile> missiles=new ArrayList<Missile>();
 	Image offScreenImage = null;

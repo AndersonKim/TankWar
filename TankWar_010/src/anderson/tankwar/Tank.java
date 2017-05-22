@@ -118,6 +118,11 @@ public class Tank {
 		if(this.dir!=Direction.STOP){
 			this.ptDir=this.dir;
 		}
+		
+		if(x<0) x=0;
+		if(y<30) y=30;
+		if(x+Tank.TANK_WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.TANK_WIDTH;
+		if(y+Tank.TANK_HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.TANK_HEIGHT;
 	}
 
 	public void currentPos(){
@@ -125,8 +130,6 @@ public class Tank {
 	}
 	public void keyPressed(KeyEvent e){
 		switch (e.getKeyCode()){
-
-		
 		case KeyEvent.VK_UP:
 			bU=true;
 			break;
@@ -153,6 +156,7 @@ public class Tank {
 		else if(bL&&!bU&&!bR&&bD) dir=Direction.DL;
 		else if(!bL&&!bU&&bR&&bD) dir=Direction.DR;
 		else if(!bL&&!bU&&!bR&&!bD) dir=Direction.STOP;
+		
 	}
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()){
