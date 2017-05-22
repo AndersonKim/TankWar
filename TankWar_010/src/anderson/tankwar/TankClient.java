@@ -17,15 +17,12 @@ public class TankClient extends Frame {
 
 	public static final int WIDTH = 800;
 	public static final int HIGHT = 600;
-	int x = 50, y = 50;
+	private Tank myTank=new Tank(50,50);
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
-		Color c = g.getColor();
-		g.setColor(Color.RED);
-		g.fillOval(x, y, 30, 30);
-		g.setColor(c);
+		myTank.draw(g);
 	}
 
 	@Override
@@ -69,9 +66,7 @@ public class TankClient extends Frame {
 		new Thread(new PaintThread()).start();
 
 	}
-public void currentPos(){
-	System.out.println(x+":"+y);
-}
+
 	private class PaintThread implements Runnable {
 
 		@Override
@@ -98,23 +93,9 @@ public void currentPos(){
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			// TODO 自动生成的方法存根
-			switch (arg0.getKeyCode()){
-				case 38:
-					y-=5;
-					break;
-				case 40:
-					y+=5;
-					break;
-				case 37:
-					x-=5;
-					break;
-				case 39:
-					x+=5;
-					break;
-			}
-			currentPos();
+			myTank.keyPressed(arg0);
 		}
-		
+
 	}
 
 }
