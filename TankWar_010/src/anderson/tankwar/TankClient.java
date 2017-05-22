@@ -91,8 +91,12 @@ public class TankClient extends Frame {
 	private class KeyMonitor extends KeyAdapter{
 
 		@Override
+		public void keyReleased(KeyEvent arg0) {
+			myTank.keyReleased(arg0);
+		}
+
+		@Override
 		public void keyPressed(KeyEvent arg0) {
-			// TODO 自动生成的方法存根
 			myTank.keyPressed(arg0);
 		}
 
