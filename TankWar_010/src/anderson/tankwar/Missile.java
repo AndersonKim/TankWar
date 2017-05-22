@@ -9,11 +9,19 @@ public class Missile {
 	static final float YSPEED = 10;
 	private int x;
 	private int y;
+	private TankClient tc;
+	private boolean live=true;
 	Tank.Direction dir;
 	public Missile(int x,int y,Tank.Direction dir) {
 		this.x=x;
 		this.y=y;
 		this.dir=dir;
+	}
+	public Missile(int x,int y,Tank.Direction dir,TankClient tc) {
+		this.x=x;
+		this.y=y;
+		this.dir=dir;
+		this.tc=tc;
 	}
 
 	public void draw(Graphics g){
@@ -36,26 +44,43 @@ public class Missile {
 			x-=XSPEED;
 			break;
 		case UL:
-			x-=Math.sqrt(XSPEED);
-			y-=Math.sqrt(YSPEED);
+			x-=Math.sqrt(2)*XSPEED;
+			y-=Math.sqrt(2)*YSPEED;
 			break;
 		case UR:
-			x+=Math.sqrt(XSPEED);
-			y-=Math.sqrt(YSPEED);
+			x+=Math.sqrt(2)*XSPEED;
+			y-=Math.sqrt(2)*YSPEED;
 			break;
 		case R:
 			x+=XSPEED;
 			break;
 		case DL:
-			x-=Math.sqrt(XSPEED);
-			y+=Math.sqrt(YSPEED);
+			x-=Math.sqrt(2)*XSPEED;
+			y+=Math.sqrt(2)*YSPEED;
 			break;
 		case DR:
-			x+=Math.sqrt(XSPEED);
-			y+=Math.sqrt(YSPEED);
+			x+=Math.sqrt(2)*XSPEED;
+			y+=Math.sqrt(2)*YSPEED;
 			break;			
 		case STOP:
 			break;
 		}
+		checkPos();
+	}
+
+	private void checkPos() {
+		if(x<0||y<0||x>TankClient.WIDTH||y>TankClient.HIGHT){
+			setLive(false);
+			tc.missiles.remove(this);
+		}
+		
+	}
+
+	public boolean isLive() {
+		return live;
+	}
+
+	public void setLive(boolean live) {
+		this.live = live;
 	}
 }

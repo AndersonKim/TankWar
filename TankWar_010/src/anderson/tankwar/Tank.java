@@ -17,6 +17,7 @@ public class Tank {
 	private boolean bD=false;
 	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
 	private Direction dir=Direction.STOP;
+	private Direction ptDir=Direction.D;
 	private TankClient tc;
 
 	public Tank(int x, int y) {
@@ -46,9 +47,41 @@ public class Tank {
 		g.setColor(Color.RED);
 		g.fillOval(x, y, TANK_WIDTH, TANK_HEIGHT);
 		g.setColor(c);
+		drawCanon(ptDir,g);
 		move();
 	}
 
+	private void drawCanon(Direction ptDir,Graphics g) {
+		Color c = g.getColor();
+		g.setColor(Color.WHITE);
+		switch (ptDir) {
+		case U:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH/2, y);
+			break;
+		case D:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH/2, y+TANK_HEIGHT);
+			break;
+		case L:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y+TANK_HEIGHT/2);
+			break;
+		case UL:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y);
+			break;
+		case UR:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y);
+			break;
+		case R:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y+TANK_HEIGHT/2);
+			break;
+		case DL:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y+TANK_HEIGHT);
+			break;
+		case DR:
+			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y+TANK_HEIGHT);
+			break;			
+		}
+
+	}
 	private void move(){
 		switch (dir) {
 		case U:
@@ -61,26 +94,29 @@ public class Tank {
 			x-=XSPEED;
 			break;
 		case UL:
-			x-=Math.sqrt(XSPEED);
-			y-=Math.sqrt(YSPEED);
+			x-=Math.sqrt(2)*XSPEED;
+			y-=Math.sqrt(2)*YSPEED;
 			break;
 		case UR:
-			x+=Math.sqrt(XSPEED);
-			y-=Math.sqrt(YSPEED);
+			x+=Math.sqrt(2)*XSPEED;
+			y-=Math.sqrt(2)*YSPEED;
 			break;
 		case R:
 			x+=XSPEED;
 			break;
 		case DL:
-			x-=Math.sqrt(XSPEED);
-			y+=Math.sqrt(YSPEED);
+			x-=Math.sqrt(2)*XSPEED;
+			y+=Math.sqrt(2)*YSPEED;
 			break;
 		case DR:
-			x+=Math.sqrt(XSPEED);
-			y+=Math.sqrt(YSPEED);
+			x+=Math.sqrt(2)*XSPEED;
+			y+=Math.sqrt(2)*YSPEED;
 			break;			
 		case STOP:
 			break;
+		}
+		if(this.dir!=Direction.STOP){
+			this.ptDir=this.dir;
 		}
 	}
 
@@ -90,9 +126,7 @@ public class Tank {
 	public void keyPressed(KeyEvent e){
 		switch (e.getKeyCode()){
 
-		case KeyEvent.VK_F:
-			tc.m=fireMissile();
-			break;
+		
 		case KeyEvent.VK_UP:
 			bU=true;
 			break;
@@ -107,7 +141,7 @@ public class Tank {
 			break;
 		}
 		locateDirection();
-		currentPos();
+		//currentPos();
 	}
 	private void locateDirection(){
 		if(bL&&!bU&&!bR&&!bD) dir=Direction.L;
@@ -122,6 +156,9 @@ public class Tank {
 	}
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()){
+		case KeyEvent.VK_F:
+			tc.missiles.add(fireMissile());
+			break;
 		case KeyEvent.VK_UP:
 			bU=false;
 			break;
@@ -142,8 +179,8 @@ public class Tank {
 		Missile m=new Missile(
 				x+Tank.TANK_WIDTH/2-Missile.BULLET_RADIUS/2,
 				y+Tank.TANK_HEIGHT/2-Missile.BULLET_RADIUS/2,
-				dir
-				);
+				ptDir,
+				tc);
 		return m;
 	}
 }

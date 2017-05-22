@@ -11,19 +11,26 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.*;
 
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
 
-	public static final int WIDTH = 800;
-	public static final int HIGHT = 600;
+	public static final int WIDTH = 300;
+	public static final int HIGHT = 400;
 	public Tank myTank=new Tank(50,50,this);
-	public Missile m;
+	public List<Missile> missiles=new ArrayList<Missile>();
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
-		if(m!=null)m.draw(g);
+		g.setColor(Color.WHITE);
+		g.drawString("missiles count : "+missiles.size(), 10, 50);
+		g.drawString("tank pos : "+myTank.getX()+":"+myTank.getY(), 10, 70);
+		for(int i=0;i<missiles.size();i++){
+			Missile missile=missiles.get(i);
+			missile.draw(g);
+		}
 		myTank.draw(g);
 	}
 
