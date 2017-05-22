@@ -17,11 +17,13 @@ public class TankClient extends Frame {
 
 	public static final int WIDTH = 800;
 	public static final int HIGHT = 600;
-	private Tank myTank=new Tank(50,50);
+	public Tank myTank=new Tank(50,50,this);
+	public Missile m;
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
+		if(m!=null)m.draw(g);
 		myTank.draw(g);
 	}
 
