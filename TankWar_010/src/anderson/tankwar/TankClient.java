@@ -18,7 +18,9 @@ public class TankClient extends Frame {
 
 	public static final int WIDTH = 500;
 	public static final int HIGHT = 500;
-	public Tank myTank=new Tank(50,50,this);
+	public Tank myTank=new Tank(50,50,true,this);
+	public Tank enemeTank=new Tank(150,150,false,this);
+
 	public List<Missile> missiles=new ArrayList<Missile>();
 	Image offScreenImage = null;
 
@@ -32,6 +34,7 @@ public class TankClient extends Frame {
 			missile.draw(g);
 		}
 		myTank.draw(g);
+		enemeTank.draw(g);
 	}
 
 	@Override

@@ -15,18 +15,21 @@ public class Tank {
 	private boolean bR=false;
 	private boolean bU=false;
 	private boolean bD=false;
+	private boolean good=false;
 	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
 	private Direction dir=Direction.STOP;
 	private Direction ptDir=Direction.D;
 	private TankClient tc;
 
-	public Tank(int x, int y) {
+	public Tank(int x, int y,boolean good) {
 		this.x = x;
 		this.y = y;
+		this.good=good;
 	}
-	public Tank(int x, int y ,TankClient tc) {
+	public Tank(int x, int y ,boolean good,TankClient tc) {
 		this.x = x;
 		this.y = y;
+		this.good=good;
 		this.tc=tc;
 	}
 	public int getX() {
@@ -44,7 +47,11 @@ public class Tank {
 
 	public void draw(Graphics g){
 		Color c = g.getColor();
-		g.setColor(Color.RED);
+		if(good){
+			g.setColor(Color.RED);	
+		}else{
+			g.setColor(Color.GREEN);
+		}
 		g.fillOval(x, y, TANK_WIDTH, TANK_HEIGHT);
 		g.setColor(c);
 		drawCanon(ptDir,g);
