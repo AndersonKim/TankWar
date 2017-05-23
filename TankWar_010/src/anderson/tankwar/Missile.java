@@ -93,7 +93,10 @@ public class Missile {
 	public boolean hitTank(Tank tank) {
 		boolean hit = false;
 		if (tank.isLive()) {
-			if (x < tank.getX() + tank.WIDTH && x > tank.getX() && y < tank.getY() + tank.WIDTH && y > tank.getY()) {
+			if (x+BULLET_RADIUS/2 < tank.getX() + tank.WIDTH &&
+					x+BULLET_RADIUS/2 > tank.getX() &&
+					y+BULLET_RADIUS/2 < tank.getY() + tank.WIDTH &&
+					y+BULLET_RADIUS/2 > tank.getY()) {
 				hit = true;
 				tank.setLive(false);
 				this.live = false;
