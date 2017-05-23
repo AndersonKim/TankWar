@@ -19,23 +19,35 @@ public class TankClient extends Frame {
 	public static final int WIDTH = 500;
 	public static final int HIGHT = 500;
 	public Tank myTank = new Tank(50, 50, true, this);
-	public Tank enemeTank1 = new Tank(150, 150, false, this);
 	public List<Missile> missiles = new ArrayList<Missile>();
+	public List<Explode> explodes = new ArrayList<Explode>();
+	public List<Tank> tanks = new ArrayList<Tank>();
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.drawString("missiles count : " + missiles.size(), 10, 50);
-		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 70);
+		g.drawString("explodes count : " + missiles.size(), 10, 70);
+		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 90);
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile missile = missiles.get(i);
-			missile.hitTank(enemeTank1);
-
+			missile.hitTanks(tanks);
 			missile.draw(g);
 		}
+		
+		for (int i = 0; i < explodes.size(); i++) {
+			Explode e=explodes.get(i);
+			e.draw(g);
+		}
+		
+		for(int i=0;i<tanks.size();i++){
+			Tank t=tanks.get(i);
+			t.draw(g);
+		}
+		
 		myTank.draw(g);
-		enemeTank1.draw(g);
+		
 
 	}
 
@@ -64,7 +76,12 @@ public class TankClient extends Frame {
 	}
 
 	private void launchFrame() {
-		// TODO 自动生成的方法存根
+		
+		for(int i=0;i<10;i++){
+			tanks.add(new Tank(50+40*(i+1),50,false,this));
+		}
+		
+		
 		this.setTitle("Tank War--Client");
 		this.setLocation(WIDTH / 2, HIGHT / 2);
 		this.setSize(WIDTH, HIGHT);

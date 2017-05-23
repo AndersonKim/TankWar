@@ -2,6 +2,7 @@ package anderson.tankwar;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 
 public class Missile {
 	static final int BULLET_RADIUS = 10;
@@ -100,9 +101,22 @@ public class Missile {
 				hit = true;
 				tank.setLive(false);
 				this.live = false;
+				
+				Explode e=new Explode(x, y, tc);
+				tc.explodes.add(e);
 			}
 		}
 
 		return hit;
+	}
+	
+	
+	public boolean hitTanks(List<Tank> tanks){
+		for(int i=0;i<tanks.size();i++){
+			if(hitTank(tanks.get(i))){
+				return true;
+			}
+		}
+		return false;
 	}
 }
