@@ -18,24 +18,25 @@ public class TankClient extends Frame {
 
 	public static final int WIDTH = 500;
 	public static final int HIGHT = 500;
-	public Tank myTank=new Tank(50,50,true,this);
-	public Tank enemeTank=new Tank(150,150,false,this);
-
-	public List<Missile> missiles=new ArrayList<Missile>();
+	public Tank myTank = new Tank(50, 50, true, this);
+	public Tank enemeTank1 = new Tank(150, 150, false, this);
+	public List<Missile> missiles = new ArrayList<Missile>();
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("missiles count : "+missiles.size(), 10, 50);
-		g.drawString("tank pos : "+myTank.getX()+":"+myTank.getY(), 10, 70);
-		for(int i=0;i<missiles.size();i++){
-			Missile missile=missiles.get(i);
-			missile.hitTank(enemeTank);
+		g.drawString("missiles count : " + missiles.size(), 10, 50);
+		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 70);
+		for (int i = 0; i < missiles.size(); i++) {
+			Missile missile = missiles.get(i);
+			missile.hitTank(enemeTank1);
+
 			missile.draw(g);
 		}
 		myTank.draw(g);
-		enemeTank.draw(g);
+		enemeTank1.draw(g);
+
 	}
 
 	@Override
@@ -96,12 +97,14 @@ public class TankClient extends Frame {
 		}
 
 	}
+
 	/**
 	 * listen key press action and tank move
+	 * 
 	 * @author lenovo
 	 *
 	 */
-	private class KeyMonitor extends KeyAdapter{
+	private class KeyMonitor extends KeyAdapter {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
