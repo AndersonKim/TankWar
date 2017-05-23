@@ -17,6 +17,13 @@ public class Tank {
 	private boolean bU=false;
 	private boolean bD=false;
 	private boolean good=false;
+	public boolean isGood() {
+		return good;
+	}
+	public void setGood(boolean good) {
+		this.good = good;
+	}
+
 	private boolean live=true;
 	private Random r=new Random();
 	
@@ -165,6 +172,8 @@ public class Tank {
 			}else{
 				step++;	
 			}
+			
+			if(r.nextInt(40)>=38) this.fireMissile();
 		}
 	}
 
@@ -204,7 +213,7 @@ public class Tank {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()){
 		case KeyEvent.VK_F:
-			tc.missiles.add(fireMissile());
+			fireMissile();
 			break;
 		case KeyEvent.VK_UP:
 			bU=false;
@@ -226,8 +235,10 @@ public class Tank {
 		Missile m=new Missile(
 				x+Tank.WIDTH/2-Missile.BULLET_RADIUS/2,
 				y+Tank.HEIGHT/2-Missile.BULLET_RADIUS/2,
+				good,
 				ptDir,
 				tc);
+		tc.missiles.add(m);
 		return m;
 	}
 }

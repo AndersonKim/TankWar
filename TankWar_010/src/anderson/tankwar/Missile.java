@@ -10,6 +10,16 @@ public class Missile {
 	static final float YSPEED = 10;
 	private int x;
 	private int y;
+	private boolean good;
+	public boolean isGood() {
+		return good;
+	}
+
+	public void setGood(boolean good) {
+		this.good = good;
+	}
+
+
 	private TankClient tc;
 	private boolean live = true;
 	Tank.Direction dir;
@@ -24,6 +34,13 @@ public class Missile {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+		this.tc = tc;
+	}
+	public Missile(int x, int y, boolean good,Tank.Direction dir, TankClient tc) {
+		this.x = x;
+		this.y = y;
+		this.dir = dir;
+		this.good=good;
 		this.tc = tc;
 	}
 
@@ -93,7 +110,7 @@ public class Missile {
 
 	public boolean hitTank(Tank tank) {
 		boolean hit = false;
-		if (tank.isLive()) {
+		if (tank.isLive()&&this.good!=tank.isGood()) {
 			if (x+BULLET_RADIUS/2 < tank.getX() + tank.WIDTH &&
 					x+BULLET_RADIUS/2 > tank.getX() &&
 					y+BULLET_RADIUS/2 < tank.getY() + tank.WIDTH &&
