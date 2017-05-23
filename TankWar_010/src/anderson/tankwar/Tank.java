@@ -3,6 +3,7 @@ package anderson.tankwar;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Tank {
 	static final float XSPEED = 5;
@@ -17,8 +18,9 @@ public class Tank {
 	private boolean bD=false;
 	private boolean good=false;
 	private boolean live=true;
+	private Random r=new Random();
 	
-
+	int step=0;
 	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
 	private Direction dir=Direction.STOP;
 	private Direction ptDir=Direction.D;
@@ -33,6 +35,13 @@ public class Tank {
 		this.x = x;
 		this.y = y;
 		this.good=good;
+		this.tc=tc;
+	}
+	public Tank(int x, int y ,boolean good,Direction dir,TankClient tc) {
+		this.x = x;
+		this.y = y;
+		this.good=good;
+		this.dir=dir;
 		this.tc=tc;
 	}
 	public int getX() {
@@ -54,7 +63,12 @@ public class Tank {
 		this.live = live;
 	}
 	public void draw(Graphics g){
-		if(!live) return;
+		if(!live) {
+			if(!good){
+				tc.tanks.remove(this);
+				return;
+			}
+		}
 		
 		Color c = g.getColor();
 		if(good){
@@ -140,6 +154,18 @@ public class Tank {
 		if(y<30) y=30;
 		if(x+Tank.WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.WIDTH;
 		if(y+Tank.HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.HEIGHT;
+		
+		if(!good){
+			
+			if(step>4){
+				Direction[] dirs=Direction.values();
+				int rint=r.nextInt(dirs.length);
+				dir=dirs[rint];
+				step=0;
+			}else{
+				step++;	
+			}
+		}
 	}
 
 	public void currentPos(){

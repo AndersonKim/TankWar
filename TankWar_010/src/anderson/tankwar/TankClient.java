@@ -13,6 +13,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.*;
 
+import anderson.tankwar.Tank.Direction;
+
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
 
@@ -28,8 +30,9 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.drawString("missiles count : " + missiles.size(), 10, 50);
-		g.drawString("explodes count : " + missiles.size(), 10, 70);
-		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 90);
+		g.drawString("explodes count : " + explodes.size(), 10, 70);
+		g.drawString("tanks count : " + tanks.size(), 10, 90);
+		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 110);
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile missile = missiles.get(i);
 			missile.hitTanks(tanks);
@@ -78,7 +81,7 @@ public class TankClient extends Frame {
 	private void launchFrame() {
 		
 		for(int i=0;i<10;i++){
-			tanks.add(new Tank(50+40*(i+1),50,false,this));
+			tanks.add(new Tank(50+40*(i+1),50,false,Direction.D,this));
 		}
 		
 		
