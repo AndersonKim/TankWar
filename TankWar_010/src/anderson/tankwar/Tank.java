@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 public class Tank {
 	static final float XSPEED = 5;
 	static final float YSPEED = 5;
-	static final int TANK_WIDTH = 30;
-	static final int TANK_HEIGHT = 30;
+	static final int WIDTH = 30;
+	static final int HEIGHT = 30;
 	private int x;
 	private int y;
 	private boolean bL=false;
@@ -16,6 +16,9 @@ public class Tank {
 	private boolean bU=false;
 	private boolean bD=false;
 	private boolean good=false;
+	private boolean live=true;
+	
+
 	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
 	private Direction dir=Direction.STOP;
 	private Direction ptDir=Direction.D;
@@ -44,15 +47,22 @@ public class Tank {
 	public void setY(int y) {
 		this.y = y;
 	}
-
+	public boolean isLive() {
+		return live;
+	}
+	public void setLive(boolean live) {
+		this.live = live;
+	}
 	public void draw(Graphics g){
+		if(!live) return;
+		
 		Color c = g.getColor();
 		if(good){
 			g.setColor(Color.RED);	
 		}else{
 			g.setColor(Color.GREEN);
 		}
-		g.fillOval(x, y, TANK_WIDTH, TANK_HEIGHT);
+		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
 		drawCanon(ptDir,g);
 		move();
@@ -63,28 +73,28 @@ public class Tank {
 		g.setColor(Color.WHITE);
 		switch (ptDir) {
 		case U:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH/2, y);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH/2, y);
 			break;
 		case D:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH/2, y+TANK_HEIGHT);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH/2, y+HEIGHT);
 			break;
 		case L:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y+TANK_HEIGHT/2);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x, y+HEIGHT/2);
 			break;
 		case UL:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x, y);
 			break;
 		case UR:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH, y);
 			break;
 		case R:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y+TANK_HEIGHT/2);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH, y+HEIGHT/2);
 			break;
 		case DL:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x, y+TANK_HEIGHT);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x, y+HEIGHT);
 			break;
 		case DR:
-			g.drawLine(x+TANK_WIDTH/2,y+TANK_HEIGHT/2, x+TANK_WIDTH, y+TANK_HEIGHT);
+			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH, y+HEIGHT);
 			break;			
 		}
 
@@ -128,8 +138,8 @@ public class Tank {
 		
 		if(x<0) x=0;
 		if(y<30) y=30;
-		if(x+Tank.TANK_WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.TANK_WIDTH;
-		if(y+Tank.TANK_HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.TANK_HEIGHT;
+		if(x+Tank.WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.WIDTH;
+		if(y+Tank.HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.HEIGHT;
 	}
 
 	public void currentPos(){
@@ -188,8 +198,8 @@ public class Tank {
 
 	public Missile fireMissile(){
 		Missile m=new Missile(
-				x+Tank.TANK_WIDTH/2-Missile.BULLET_RADIUS/2,
-				y+Tank.TANK_HEIGHT/2-Missile.BULLET_RADIUS/2,
+				x+Tank.WIDTH/2-Missile.BULLET_RADIUS/2,
+				y+Tank.HEIGHT/2-Missile.BULLET_RADIUS/2,
 				ptDir,
 				tc);
 		return m;

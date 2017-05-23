@@ -31,7 +31,9 @@ public class TankClient extends Frame {
 		g.drawString("tank pos : "+myTank.getX()+":"+myTank.getY(), 10, 70);
 		for(int i=0;i<missiles.size();i++){
 			Missile missile=missiles.get(i);
+			missile.hitTank(enemeTank);
 			missile.draw(g);
+			
 		}
 		myTank.draw(g);
 		enemeTank.draw(g);
