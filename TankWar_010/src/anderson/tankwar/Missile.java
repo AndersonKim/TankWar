@@ -2,6 +2,7 @@ package anderson.tankwar;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.List;
 
 public class Missile {
@@ -135,5 +136,9 @@ public class Missile {
 			}
 		}
 		return false;
+	}
+	
+	public Rectangle getRect(){
+		return new Rectangle(x,y,BULLET_RADIUS,BULLET_RADIUS);
 	}
 }

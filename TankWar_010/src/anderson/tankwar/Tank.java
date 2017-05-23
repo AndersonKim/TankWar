@@ -2,6 +2,7 @@ package anderson.tankwar;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
@@ -75,6 +76,7 @@ public class Tank {
 				tc.tanks.remove(this);
 				return;
 			}
+			return;
 		}
 		
 		Color c = g.getColor();
@@ -119,6 +121,9 @@ public class Tank {
 			break;			
 		}
 
+	}
+	public Rectangle getRect(){
+		return new Rectangle(x,y,WIDTH,HEIGHT);
 	}
 	private void move(){
 		switch (dir) {
@@ -232,6 +237,7 @@ public class Tank {
 	}
 
 	public Missile fireMissile(){
+		if(!live) return null;
 		Missile m=new Missile(
 				x+Tank.WIDTH/2-Missile.BULLET_RADIUS/2,
 				y+Tank.HEIGHT/2-Missile.BULLET_RADIUS/2,
