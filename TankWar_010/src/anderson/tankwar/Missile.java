@@ -112,14 +112,17 @@ public class Missile {
 	public boolean hitTank(Tank tank) {
 		boolean hit = false;
 		if (tank.isLive()&&this.good!=tank.isGood()) {
-			if (x+BULLET_RADIUS/2 < tank.getX() + tank.WIDTH &&
-					x+BULLET_RADIUS/2 > tank.getX() &&
-					y+BULLET_RADIUS/2 < tank.getY() + tank.WIDTH &&
-					y+BULLET_RADIUS/2 > tank.getY()) {
+			if (this.getRect().intersects(tank.getRect())) {
+				if(tank.isGood()){
+					tank.setLife(tank.getLife()-20);
+					if(tank.getLife()<=0){
+						tank.setLive(false);
+					}
+				}else{
+					tank.setLive(false);
+				}
 				hit = true;
-				tank.setLive(false);
 				this.live = false;
-				
 				Explode e=new Explode(x, y, tc);
 				tc.explodes.add(e);
 			}
@@ -127,8 +130,8 @@ public class Missile {
 
 		return hit;
 	}
-	
-	
+
+
 	public boolean hitTanks(List<Tank> tanks){
 		for(int i=0;i<tanks.size();i++){
 			if(hitTank(tanks.get(i))){
@@ -137,7 +140,7 @@ public class Missile {
 		}
 		return false;
 	}
-	
+
 	public boolean hitWall(Wall w){
 		if(this.getRect().intersects(w.getRect())&&this.isLive()){
 			this.setLive(false);
@@ -145,7 +148,7 @@ public class Missile {
 		}
 		return false;
 	}
-	
+
 	public Rectangle getRect(){
 		return new Rectangle(x,y,BULLET_RADIUS,BULLET_RADIUS);
 	}

@@ -1,4 +1,4 @@
-GitRepositoriesView.GitDirectories=
-RepositorySearchDialogSearchPath=D\:\\EclipseGitRepo
+GitRepositoriesView.GitDirectories=D\:\\EclipseCode\\TankWar\\.git;
+RepositorySearchDialogSearchPath=D\:\\EclipseCode\\TankWar
 core_defaultRepositoryDir=D\:\\EclipseGitRepo
 eclipse.preferences.version=1

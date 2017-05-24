@@ -1,0 +1,5 @@
+package anderson.tankwar;
+
+public class Wall {
+
+}

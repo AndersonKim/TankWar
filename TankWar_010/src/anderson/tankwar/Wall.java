@@ -1,5 +1,6 @@
 package anderson.tankwar;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -15,9 +16,12 @@ public class Wall {
 		this.tc = tc;
 	}
 	public void draw(Graphics g){
+		Color c=g.getColor();
+		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(x, y, w, h);
+		g.setColor(c);
 	}
-	
+
 	public Rectangle getRect(){
 		return new Rectangle(x,y,w,h);
 	}

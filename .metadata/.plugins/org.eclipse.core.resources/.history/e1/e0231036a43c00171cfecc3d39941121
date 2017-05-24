@@ -1,0 +1,88 @@
+/**
+ * 
+ */
+package anderson.tankwar;
+
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+@SuppressWarnings("serial")
+public class TankClient extends Frame {
+	
+final static int WIDTH=800;
+final static int HIGHT=600;
+	int x = 50, y = 50;
+	Image offScreenImage=null;
+	@Override
+	public void paint(Graphics g) {
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillOval(x, y, 30, 30);
+		g.setColor(c);
+
+		y += 5;
+	}
+	
+	@Override
+	public void update(Graphics g) {
+		if(offScreenImage==null){
+			offScreenImage=this.createImage(WIDTH,HIGHT);
+		}
+		Graphics gOffScreen=offScreenImage.getGraphics();
+		Color c=gOffScreen.getColor();
+		gOffScreen.setColor(Color.GREEN);
+		gOffScreen.fillRect(0, 0, WIDTH, HIGHT);
+		gOffScreen.setColor(c);
+		paint(gOffScreen);
+		g.drawImage(offScreenImage, 0, 0,null);
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO 自动生成的方法存根
+		TankClient tc = new TankClient();
+		tc.launchFrame();
+
+	}
+
+	private void launchFrame() {
+		// TODO 自动生成的方法存根
+		this.setTitle("Tank War--Client");
+		this.setLocation(WIDTH/2, HIGHT/2);
+		this.setSize(WIDTH, HIGHT);
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent arg0) {
+				System.exit(0);
+			}
+
+		});
+		this.setResizable(false);
+		this.setVisible(true);
+		new Thread(new PaintThread()).start();
+
+	}
+
+	private class PaintThread implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				while (true) {
+					repaint();
+					Thread.sleep(50);
+				}
+			} catch (InterruptedException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}

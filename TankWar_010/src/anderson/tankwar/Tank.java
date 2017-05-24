@@ -15,6 +15,14 @@ public class Tank {
 	private int y;
 	int oldX;
 	int oldY;
+	int life=100;
+	public int getLife() {
+		return life;
+	}
+	public void setLife(int life) {
+		this.life = life;
+	}
+
 	private boolean bL=false;
 	private boolean bR=false;
 	private boolean bU=false;
@@ -29,7 +37,7 @@ public class Tank {
 
 	private boolean live=true;
 	private Random r=new Random();
-	
+
 	int step=0;
 	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
 	private Direction dir=Direction.STOP;
@@ -80,7 +88,7 @@ public class Tank {
 			}
 			return;
 		}
-		
+
 		Color c = g.getColor();
 		if(good){
 			g.setColor(Color.RED);	
@@ -91,6 +99,7 @@ public class Tank {
 		g.setColor(c);
 		drawCanon(ptDir,g);
 		move();
+		if(good) hb.draw(g);
 	}
 
 	private void drawCanon(Direction ptDir,Graphics g) {
@@ -165,14 +174,14 @@ public class Tank {
 		if(this.dir!=Direction.STOP){
 			this.ptDir=this.dir;
 		}
-		
+
 		if(x<0) x=0;
 		if(y<30) y=30;
 		if(x+Tank.WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.WIDTH;
 		if(y+Tank.HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.HEIGHT;
-		
+
 		if(!good){
-			
+
 			if(step>4){
 				Direction[] dirs=Direction.values();
 				int rint=r.nextInt(dirs.length);
@@ -181,7 +190,7 @@ public class Tank {
 			}else{
 				step++;	
 			}
-			
+
 			if(r.nextInt(40)>=38) this.fireMissile();
 		}
 	}
@@ -217,12 +226,21 @@ public class Tank {
 		else if(bL&&!bU&&!bR&&bD) dir=Direction.DL;
 		else if(!bL&&!bU&&bR&&bD) dir=Direction.DR;
 		else if(!bL&&!bU&&!bR&&!bD) dir=Direction.STOP;
-		
+
 	}
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()){
 		case KeyEvent.VK_F:
 			fireMissile();
+			break;
+		case KeyEvent.VK_A:
+			fireSuper();
+			break;
+		case KeyEvent.VK_F2:
+			if(!this.isLive()){
+				this.live=true;
+				this.life=100;
+			}
 			break;
 		case KeyEvent.VK_UP:
 			bU=false;
@@ -251,10 +269,36 @@ public class Tank {
 		tc.missiles.add(m);
 		return m;
 	}
-	
+	public Missile fireMissile(Direction _dir){
+		if(!live) return null;
+		Missile m=new Missile(
+				x+Tank.WIDTH/2-Missile.BULLET_RADIUS/2,
+				y+Tank.HEIGHT/2-Missile.BULLET_RADIUS/2,
+				good,
+				_dir,
+				tc);
+		tc.missiles.add(m);
+		return m;
+	}
+	public void fireSuper(){
+		Direction[] dirs=Direction.values();
+		for(int i=0;i<dirs.length;i++){
+			if(dirs[i]!=Direction.STOP)
+				fireMissile(dirs[i]);
+		}
+	}
+
 	public void stay(){
 		x=oldX;
 		y=oldY;
+	}
+	public boolean eat(HealPack hp){
+		if(isLive()&&good&&this.getRect().intersects(hp.getRec())){
+			setLife(100);
+			hp.live=false;
+			return true;
+		}
+		return false;
 	}
 	public boolean collidesWithTank(TankClient tc){
 		for(Tank tank:tc.tanks){
@@ -264,7 +308,7 @@ public class Tank {
 						stay();
 						return true;
 					}
-						
+
 		}
 		return false;
 	}
@@ -275,5 +319,16 @@ public class Tank {
 		}
 		return false;
 	}
-	
+	private HealthBar hb=new HealthBar();
+	private class HealthBar{
+		public void draw(Graphics g){
+			Color c=g.getColor();
+			g.setColor(Color.CYAN);
+			g.drawRect(x, y-10, Tank.WIDTH, 10);
+			g.setColor(Color.RED);
+			int _width=WIDTH*life/100;
+			g.fillRect(x, y-10, _width, 10);
+			
+		}
+	}
 }

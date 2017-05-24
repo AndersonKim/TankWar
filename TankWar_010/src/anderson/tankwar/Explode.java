@@ -9,8 +9,8 @@ public class Explode {
 	int[] diameter={4,7,12,18,28,32,49,30,14,6};
 	int step=0;
 	TankClient tc;
-	
-	
+
+
 	public Explode(int x, int y,TankClient tc) {
 		super();
 		this.x = x;

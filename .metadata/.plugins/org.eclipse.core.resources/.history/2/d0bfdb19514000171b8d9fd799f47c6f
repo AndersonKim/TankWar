@@ -1,0 +1,17 @@
+package anderson.tankwar;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class HealPack {
+	int x,y,w,h;
+	TankClient tc;
+	
+	public void draw(Graphics g){
+		Color c=g.getColor();
+		g.setColor(Color.CYAN);
+		g.drawRect(x, y, w, h);
+		g.setColor(c);
+
+	}
+}

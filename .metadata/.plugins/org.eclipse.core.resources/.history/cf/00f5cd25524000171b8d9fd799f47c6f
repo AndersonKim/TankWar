@@ -1,0 +1,41 @@
+package anderson.tankwar;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class HealPack {
+	int x,y,w,h;
+	TankClient tc;
+	private int[][] path={
+			{350,300},{360,300},{375,450},{275,125},{234,400},
+			{400,200},{360,210},{110,119},{500,600},{456,654}
+	};
+
+
+
+
+
+	public HealPack() {
+		x=path[0][0];
+		y=path[0][1];
+	}
+
+	int step=0;
+	private void move(){
+		step++;
+		if(step==path.length){
+			step=0;
+		}
+		x=path[step][0];
+		y=path[step][1];
+	}
+
+
+	public void draw(Graphics g){
+		Color c=g.getColor();
+		g.setColor(Color.CYAN);
+		g.drawRect(x, y, w, h);
+		g.setColor(c);
+		move();
+	}
+}

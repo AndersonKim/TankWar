@@ -14,7 +14,11 @@ import java.awt.event.WindowEvent;
 import java.util.*;
 
 import anderson.tankwar.Tank.Direction;
-
+/**
+ * 游戏窗口以及管理器
+ * @author andersonkim
+ *
+ */
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
 
@@ -25,38 +29,51 @@ public class TankClient extends Frame {
 	public List<Explode> explodes = new ArrayList<Explode>();
 	public List<Tank> tanks = new ArrayList<Tank>();
 	Wall wall=new Wall(400,400,10,100,this);
+	HealPack hp=new HealPack(this);
 	Image offScreenImage = null;
 
 	@Override
 	public void paint(Graphics g) {
+		/**
+		 * 指定游戏的重要参数
+		 * 导弹数量
+		 * 坦克数量
+		 * 爆炸数量
+		 * 生命值
+		 * 坦克位置
+		 */
+		Color c=g.getColor();
 		g.setColor(Color.WHITE);
 		g.drawString("missiles count : " + missiles.size(), 10, 50);
 		g.drawString("explodes count : " + explodes.size(), 10, 70);
-		g.drawString("tanks count : " + tanks.size(), 10, 90);
-		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 110);
+		g.drawString("enemy tanks count : " + tanks.size(), 10, 90);
+		g.drawString("life count : " + myTank.getLife(), 10, 110);
+		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 130);
+		g.setColor(c);
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile missile = missiles.get(i);
 			missile.hitTanks(tanks);
-			//missile.hitTank(myTank);
+			missile.hitTank(myTank);
 			missile.draw(g);
 			missile.hitWall(wall);
 		}
-		
+
 		for (int i = 0; i < explodes.size(); i++) {
 			Explode e=explodes.get(i);
 			e.draw(g);
 		}
-		
+
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
 			t.draw(g);
 			t.collidesWithTank(this);
 			t.collidesWithWall(wall);
 		}
-		
+
 		myTank.draw(g);
 		myTank.collidesWithWall(wall);
-		
+		myTank.eat(hp);
+		hp.draw(g);
 		wall.draw(g);
 
 	}
@@ -76,7 +93,7 @@ public class TankClient extends Frame {
 	}
 
 	/**
-	 * @param args
+	 * @param args 运行参数
 	 */
 	public static void main(String[] args) {
 		// TODO 自动生成的方法存根
@@ -84,14 +101,21 @@ public class TankClient extends Frame {
 		tc.launchFrame();
 
 	}
-
-	private void launchFrame() {
-		
+	public void addEnemyTank(){
 		for(int i=0;i<10;i++){
 			tanks.add(new Tank(50+40*(i+1),50,false,Direction.D,this));
 		}
-		
-		
+	}
+	/**
+	 * 初始化主窗口以及内容
+	 */
+	private void launchFrame() {
+
+		for(int i=0;i<10;i++){
+			tanks.add(new Tank(50+40*(i+1),50,false,Direction.D,this));
+		}
+
+
 		this.setTitle("Tank War--Client");
 		this.setLocation(WIDTH / 2, HIGHT / 2);
 		this.setSize(WIDTH, HIGHT);
@@ -136,6 +160,12 @@ public class TankClient extends Frame {
 		@Override
 		public void keyReleased(KeyEvent arg0) {
 			myTank.keyReleased(arg0);
+			switch(arg0.getKeyCode()){
+			case KeyEvent.VK_F1:
+				addEnemyTank();
+				break;
+			
+			}
 		}
 
 		@Override
