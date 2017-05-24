@@ -15,13 +15,16 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="anderson.tankwar.Tank"/>
-<fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="anderson.tankwar.TankClient"/>
 <fullyQualifiedTypeName name="anderson.tankwar.Explode"/>
 <fullyQualifiedTypeName name="org.omg.CORBA.TCKind"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="anderson.tankwar.Tank.Direction"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.awt.Graphics"/>
+<fullyQualifiedTypeName name="anderson.tankwar.Wall"/>
+<fullyQualifiedTypeName name="anderson.tankwar.Tank.Direction"/>
+<fullyQualifiedTypeName name="anderson.tankwar.Tank.HealthBar"/>
 <fullyQualifiedTypeName name="java.awt.Rectangle"/>
+<fullyQualifiedTypeName name="anderson.tankwar.HealPack"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
 </qualifiedTypeNameHistroy>
