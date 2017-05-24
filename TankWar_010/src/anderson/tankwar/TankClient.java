@@ -24,6 +24,7 @@ public class TankClient extends Frame {
 	public List<Missile> missiles = new ArrayList<Missile>();
 	public List<Explode> explodes = new ArrayList<Explode>();
 	public List<Tank> tanks = new ArrayList<Tank>();
+	Wall wall=new Wall(400,400,10,100,this);
 	Image offScreenImage = null;
 
 	@Override
@@ -36,8 +37,9 @@ public class TankClient extends Frame {
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile missile = missiles.get(i);
 			missile.hitTanks(tanks);
-			missile.hitTank(myTank);
+			//missile.hitTank(myTank);
 			missile.draw(g);
+			missile.hitWall(wall);
 		}
 		
 		for (int i = 0; i < explodes.size(); i++) {
@@ -48,10 +50,14 @@ public class TankClient extends Frame {
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
 			t.draw(g);
+			t.collidesWithTank(this);
+			t.collidesWithWall(wall);
 		}
 		
 		myTank.draw(g);
+		myTank.collidesWithWall(wall);
 		
+		wall.draw(g);
 
 	}
 

@@ -13,6 +13,8 @@ public class Tank {
 	static final int HEIGHT = 30;
 	private int x;
 	private int y;
+	int oldX;
+	int oldY;
 	private boolean bL=false;
 	private boolean bR=false;
 	private boolean bU=false;
@@ -126,6 +128,8 @@ public class Tank {
 		return new Rectangle(x,y,WIDTH,HEIGHT);
 	}
 	private void move(){
+		this.oldX=x;
+		this.oldY=y;
 		switch (dir) {
 		case U:
 			y-=XSPEED;
@@ -247,4 +251,29 @@ public class Tank {
 		tc.missiles.add(m);
 		return m;
 	}
+	
+	public void stay(){
+		x=oldX;
+		y=oldY;
+	}
+	public boolean collidesWithTank(TankClient tc){
+		for(Tank tank:tc.tanks){
+			if(this!=tank)
+				if(this.isLive()&&tank.isLive())
+					if(this.getRect().intersects(tank.getRect())){
+						stay();
+						return true;
+					}
+						
+		}
+		return false;
+	}
+	public boolean collidesWithWall(Wall wall){
+		if(this.isLive()&&this.getRect().intersects(wall.getRect())){
+			this.stay();
+			return true;
+		}
+		return false;
+	}
+	
 }

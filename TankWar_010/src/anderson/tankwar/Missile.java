@@ -138,6 +138,14 @@ public class Missile {
 		return false;
 	}
 	
+	public boolean hitWall(Wall w){
+		if(this.getRect().intersects(w.getRect())&&this.isLive()){
+			this.setLive(false);
+			return true;	
+		}
+		return false;
+	}
+	
 	public Rectangle getRect(){
 		return new Rectangle(x,y,BULLET_RADIUS,BULLET_RADIUS);
 	}
