@@ -5,17 +5,49 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.Random;
-
+/**
+ * 坦克类，移动以及攻击
+ * @author 	AndersonKim
+ * @mail	pgytao@outlook.com
+ */
 public class Tank {
+	//坦克的xy轴的分速度
 	static final float XSPEED = 5;
 	static final float YSPEED = 5;
+	//坦克的尺寸
 	static final int WIDTH = 30;
 	static final int HEIGHT = 30;
+	//坦克的位置
 	private int x;
 	private int y;
+	//坦克上一步的位置
 	int oldX;
 	int oldY;
+	//坦克的生命值
 	int life=100;
+	//坦克方向
+	private boolean bL=false;
+	private boolean bR=false;
+	private boolean bU=false;
+	private boolean bD=false;
+	//坦克阵营
+	private boolean good=false;
+	//坦克步骤
+	int step=0;
+	//枚举方向
+	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
+	//坦克移动方向
+	private Direction dir=Direction.STOP;
+	//炮筒的方向
+	private Direction ptDir=Direction.D;
+	//控制器引用
+	private TankClient tc;
+	//坦克生死
+	private boolean live=true;
+	//随机数生成器：控制敌方坦克转弯，开炮
+	private Random r=new Random();
+	//血包
+	private HealthBar hb=new HealthBar();
 	public int getLife() {
 		return life;
 	}
@@ -23,11 +55,6 @@ public class Tank {
 		this.life = life;
 	}
 
-	private boolean bL=false;
-	private boolean bR=false;
-	private boolean bU=false;
-	private boolean bD=false;
-	private boolean good=false;
 	public boolean isGood() {
 		return good;
 	}
@@ -35,14 +62,7 @@ public class Tank {
 		this.good = good;
 	}
 
-	private boolean live=true;
-	private Random r=new Random();
 
-	int step=0;
-	public enum Direction{UL,U,UR,L,STOP,R,DL,D,DR};
-	private Direction dir=Direction.STOP;
-	private Direction ptDir=Direction.D;
-	private TankClient tc;
 
 	public Tank(int x, int y,boolean good) {
 		this.x = x;
@@ -80,6 +100,10 @@ public class Tank {
 	public void setLive(boolean live) {
 		this.live = live;
 	}
+	/**
+	 * 绘制坦克
+	 * @param g
+	 */
 	public void draw(Graphics g){
 		if(!live) {
 			if(!good){
@@ -101,7 +125,11 @@ public class Tank {
 		move();
 		if(good) hb.draw(g);
 	}
-
+	/**
+	 * 绘制炮筒
+	 * @param ptDir
+	 * @param g
+	 */
 	private void drawCanon(Direction ptDir,Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.WHITE);
@@ -133,9 +161,16 @@ public class Tank {
 		}
 
 	}
+	/**
+	 * 监测框架
+	 * @return
+	 */
 	public Rectangle getRect(){
 		return new Rectangle(x,y,WIDTH,HEIGHT);
 	}
+	/**
+	 * 坦克移动
+	 */
 	private void move(){
 		this.oldX=x;
 		this.oldY=y;
@@ -194,10 +229,16 @@ public class Tank {
 			if(r.nextInt(40)>=38) this.fireMissile();
 		}
 	}
-
+	/**
+	 * 当前位置
+	 */
 	public void currentPos(){
 		System.out.println(System.currentTimeMillis()+" to: "+dir+" at:"+x+":"+y);
 	}
+	/**
+	 * 控制触发器
+	 * @param e
+	 */
 	public void keyPressed(KeyEvent e){
 		switch (e.getKeyCode()){
 		case KeyEvent.VK_UP:
@@ -216,6 +257,9 @@ public class Tank {
 		locateDirection();
 		//currentPos();
 	}
+	/**
+	 * 确定方向
+	 */
 	private void locateDirection(){
 		if(bL&&!bU&&!bR&&!bD) dir=Direction.L;
 		else if(!bL&&!bU&&bR&&!bD) dir=Direction.R;
@@ -228,6 +272,10 @@ public class Tank {
 		else if(!bL&&!bU&&!bR&&!bD) dir=Direction.STOP;
 
 	}
+	/**
+	 * 释放按键触发器
+	 * @param e
+	 */
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()){
 		case KeyEvent.VK_F:
@@ -257,7 +305,10 @@ public class Tank {
 		}
 		locateDirection();
 	}
-
+	/**
+	 * 发射导弹
+	 * @return
+	 */
 	public Missile fireMissile(){
 		if(!live) return null;
 		Missile m=new Missile(
@@ -280,6 +331,9 @@ public class Tank {
 		tc.missiles.add(m);
 		return m;
 	}
+	/**
+	 * 发射超级导弹
+	 */
 	public void fireSuper(){
 		Direction[] dirs=Direction.values();
 		for(int i=0;i<dirs.length;i++){
@@ -287,11 +341,18 @@ public class Tank {
 				fireMissile(dirs[i]);
 		}
 	}
-
+	/**
+	 * 呆在原地
+	 */
 	public void stay(){
 		x=oldX;
 		y=oldY;
 	}
+	/**
+	 * 吃血包
+	 * @param hp
+	 * @return
+	 */
 	public boolean eat(HealPack hp){
 		if(isLive()&&good&&this.getRect().intersects(hp.getRec())){
 			setLife(100);
@@ -300,6 +361,11 @@ public class Tank {
 		}
 		return false;
 	}
+	/**
+	 * 与其他坦克相撞
+	 * @param tc
+	 * @return
+	 */
 	public boolean collidesWithTank(TankClient tc){
 		for(Tank tank:tc.tanks){
 			if(this!=tank)
@@ -312,6 +378,11 @@ public class Tank {
 		}
 		return false;
 	}
+	/**
+	 * 与墙相撞
+	 * @param wall
+	 * @return
+	 */
 	public boolean collidesWithWall(Wall wall){
 		if(this.isLive()&&this.getRect().intersects(wall.getRect())){
 			this.stay();
@@ -319,7 +390,11 @@ public class Tank {
 		}
 		return false;
 	}
-	private HealthBar hb=new HealthBar();
+	/**
+	 * 内置类的血包
+	 * @author 	AndersonKim
+	 * @mail	pgytao@outlook.com
+	 */
 	private class HealthBar{
 		public void draw(Graphics g){
 			Color c=g.getColor();
@@ -328,7 +403,7 @@ public class Tank {
 			g.setColor(Color.RED);
 			int _width=WIDTH*life/100;
 			g.fillRect(x, y-10, _width, 10);
-			
+
 		}
 	}
 }

@@ -142,19 +142,12 @@ public class TankClient extends Frame {
 					Thread.sleep(50);
 				}
 			} catch (InterruptedException e) {
-				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
 		}
 
 	}
 
-	/**
-	 * listen key press action and tank move
-	 * 
-	 * @author lenovo
-	 *
-	 */
 	private class KeyMonitor extends KeyAdapter {
 
 		@Override
@@ -164,7 +157,7 @@ public class TankClient extends Frame {
 			case KeyEvent.VK_F1:
 				addEnemyTank();
 				break;
-			
+
 			}
 		}
 
