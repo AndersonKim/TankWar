@@ -15,23 +15,33 @@ import java.util.*;
 
 import anderson.tankwar.Tank.Direction;
 /**
- * 游戏窗口以及管理器
- * @author andersonkim
- *
+ * 游戏管理类
+ * @author 	AndersonKim
+ * @mail	pgytao@outlook.com
  */
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
-
+	//窗口的宽度与高度
 	public static final int WIDTH = 500;
 	public static final int HIGHT = 500;
+	//己方坦克
 	public Tank myTank = new Tank(50, 50, true, this);
+	//导弹绘制列表
 	public List<Missile> missiles = new ArrayList<Missile>();
+	//爆炸绘制列表
 	public List<Explode> explodes = new ArrayList<Explode>();
+	//坦克绘制列表
 	public List<Tank> tanks = new ArrayList<Tank>();
+	//墙壁
 	Wall wall=new Wall(400,400,10,100,this);
+	//血包
 	HealPack hp=new HealPack(this);
+	//缓冲图片
 	Image offScreenImage = null;
 
+	/**
+	 * 缓冲绘制
+	 */
 	@Override
 	public void paint(Graphics g) {
 		/**
@@ -50,6 +60,7 @@ public class TankClient extends Frame {
 		g.drawString("life count : " + myTank.getLife(), 10, 110);
 		g.drawString("tank pos : " + myTank.getX() + ":" + myTank.getY(), 10, 130);
 		g.setColor(c);
+		//绘制导弹
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile missile = missiles.get(i);
 			missile.hitTanks(tanks);
@@ -57,27 +68,36 @@ public class TankClient extends Frame {
 			missile.draw(g);
 			missile.hitWall(wall);
 		}
-
+		//绘制爆炸
 		for (int i = 0; i < explodes.size(); i++) {
 			Explode e=explodes.get(i);
 			e.draw(g);
 		}
-
+		//绘制坦克循环
 		for(int i=0;i<tanks.size();i++){
 			Tank t=tanks.get(i);
+			//坦克绘制
 			t.draw(g);
+			//坦克之间的碰撞
 			t.collidesWithTank(this);
+			//坦克与墙壁的碰撞
 			t.collidesWithWall(wall);
 		}
-
+		//己方坦克的绘制
 		myTank.draw(g);
+		//己方坦克的墙壁碰撞
 		myTank.collidesWithWall(wall);
+		//己方坦克吃血包
 		myTank.eat(hp);
+		//血包的绘制
 		hp.draw(g);
+		//墙壁的绘制
 		wall.draw(g);
 
 	}
-
+	/**
+	 * 二级缓冲防止画面抖动
+	 */
 	@Override
 	public void update(Graphics g) {
 		if (offScreenImage == null) {
@@ -101,6 +121,9 @@ public class TankClient extends Frame {
 		tc.launchFrame();
 
 	}
+	/**
+	 * 添加敌人坦克
+	 */
 	public void addEnemyTank(){
 		for(int i=0;i<10;i++){
 			tanks.add(new Tank(50+40*(i+1),50,false,Direction.D,this));
@@ -131,7 +154,11 @@ public class TankClient extends Frame {
 		new Thread(new PaintThread()).start();
 
 	}
-
+	/**
+	 * 绘制线程 50毫秒一刷新 控制游戏速度
+	 * @author 	AndersonKim
+	 * @mail	pgytao@outlook.com
+	 */
 	private class PaintThread implements Runnable {
 
 		@Override
@@ -139,7 +166,7 @@ public class TankClient extends Frame {
 			try {
 				while (true) {
 					repaint();
-					Thread.sleep(50);
+					Thread.sleep(100);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -147,7 +174,11 @@ public class TankClient extends Frame {
 		}
 
 	}
-
+	/**
+	 * 按键适配器
+	 * @author 	AndersonKim
+	 * @mail	pgytao@outlook.com
+	 */
 	private class KeyMonitor extends KeyAdapter {
 
 		@Override

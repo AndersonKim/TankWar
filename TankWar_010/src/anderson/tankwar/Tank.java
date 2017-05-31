@@ -105,6 +105,7 @@ public class Tank {
 	 * @param g
 	 */
 	public void draw(Graphics g){
+		//死亡的坦克移除绘制序列
 		if(!live) {
 			if(!good){
 				tc.tanks.remove(this);
@@ -112,7 +113,7 @@ public class Tank {
 			}
 			return;
 		}
-
+		//敌人坦克与自己坦克不同颜色
 		Color c = g.getColor();
 		if(good){
 			g.setColor(Color.RED);	
@@ -121,9 +122,13 @@ public class Tank {
 		}
 		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
+		//绘制炮筒
 		drawCanon(ptDir,g);
+		//移动
 		move();
-		if(good) hb.draw(g);
+		//己方坦克则绘制血条
+		if(good) 
+			hb.draw(g);
 	}
 	/**
 	 * 绘制炮筒
@@ -133,6 +138,7 @@ public class Tank {
 	private void drawCanon(Direction ptDir,Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.WHITE);
+		//根据炮筒方向绘制炮筒
 		switch (ptDir) {
 		case U:
 			g.drawLine(x+WIDTH/2,y+HEIGHT/2, x+WIDTH/2, y);
@@ -172,8 +178,10 @@ public class Tank {
 	 * 坦克移动
 	 */
 	private void move(){
+		//移动前记录上一步位置
 		this.oldX=x;
 		this.oldY=y;
+		//根据位置移动
 		switch (dir) {
 		case U:
 			y-=XSPEED;
@@ -206,15 +214,16 @@ public class Tank {
 		case STOP:
 			break;
 		}
+		//炮筒与移动方向相同
 		if(this.dir!=Direction.STOP){
 			this.ptDir=this.dir;
 		}
-
+//边界检测防止移动出边界
 		if(x<0) x=0;
 		if(y<30) y=30;
 		if(x+Tank.WIDTH>TankClient.WIDTH) x=TankClient.WIDTH-Tank.WIDTH;
 		if(y+Tank.HEIGHT>TankClient.HIGHT) y=TankClient.HIGHT-Tank.HEIGHT;
-
+//敌方坦克的自主移动与开炮
 		if(!good){
 
 			if(step>4){
